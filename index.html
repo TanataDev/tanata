@@ -8,7 +8,7 @@
         * { box-sizing: border-box; }
         body { 
             font-family: 'Segoe UI', Tahoma, sans-serif; 
-            background-color: #121212; 
+            background-color: #050505; 
             color: #e0e0e0; 
             display: flex; 
             flex-direction: column; 
@@ -17,96 +17,132 @@
             min-height: 100vh;
             margin: 0; 
             padding: 20px; 
+            overflow: hidden;
         }
+
+        /* Efek animasi putaran warna RGB */
+        @keyframes rgb-glow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* Kotak luar untuk efek border RGB */
+        .card-wrapper {
+            position: relative;
+            padding: 4px; /* Ketebalan border RGB */
+            border-radius: 20px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%;
+            animation: rgb-glow 20s linear infinite;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Efek cahaya berpendar (Glow) di luar border */
+        .card-wrapper::after {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(20px);
+            animation: rgb-glow 20s linear infinite;
+            opacity: 0.8;
+        }
+
+        /* Kotak hitam utama di dalam border */
         .profile-card { 
-            max-width: 500px; 
-            width: 100%; 
+            position: relative;
             text-align: center; 
-            background: #1e1e1e; 
-            padding: 40px 30px; 
+            background: #0f0f0f; 
+            padding: 50px 30px; 
             border-radius: 16px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6); 
-            border: 1px solid #333;
+            height: 100%;
+            z-index: 1;
         }
-        img.profile { 
-            width: 120px; 
-            height: 120px; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            margin-bottom: 15px; 
-            border: 3px solid #ff0000;
+
+        h1 { 
+            margin: 0 0 10px 0; 
+            color: #ffffff; 
+            font-size: 42px; 
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            /* Efek Neon Pink/Merah pada teks Tanata */
+            text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055, 0 0 40px #ff0055;
         }
-        h1 { margin: 0 0 5px 0; color: #ffffff; font-size: 26px; }
-        h2 { margin: 0 0 20px 0; color: #aaaaaa; font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
-        p.bio { color: #cccccc; line-height: 1.6; margin-bottom: 35px; font-size: 15px; }
         
+        h2 { 
+            margin: 0 0 25px 0; 
+            color: #00ffd5; 
+            font-size: 16px; 
+            font-weight: 600; 
+            letter-spacing: 3px; 
+            text-transform: uppercase; 
+            /* Efek Neon Cyan pada teks Translator */
+            text-shadow: 0 0 5px #00ffd5, 0 0 15px #00ffd5;
+        }
+
+        p.bio { 
+            color: #cccccc; 
+            line-height: 1.7; 
+            margin-bottom: 45px; 
+            font-size: 16px; 
+        }
+        
+        /* Tombol Neon YouTube */
         .youtube-btn { 
             display: inline-flex; 
             align-items: center;
             justify-content: center;
-            background: #ff0000; 
-            color: white; 
+            background: transparent; 
+            color: #ff0000; 
             text-decoration: none; 
             padding: 15px 25px; 
             border-radius: 8px; 
             font-weight: bold; 
-            transition: background 0.3s, transform 0.2s; 
             font-size: 16px;
             width: 100%;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4), inset 0 0 15px rgba(255, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .youtube-btn:hover { background: #cc0000; transform: translateY(-3px); }
-        .youtube-btn svg { width: 24px; height: 24px; margin-right: 10px; fill: currentColor; }
 
-        .stats-box { 
-            margin-top: 40px; 
-            padding-top: 20px; 
-            border-top: 1px dashed #444; 
-            font-size: 0.85em; 
-            color: #888; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
+        .youtube-btn:hover { 
+            background: #ff0000; 
+            color: #ffffff;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 1), inset 0 0 15px rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .youtube-btn svg { 
+            width: 26px; 
+            height: 26px; 
+            margin-right: 12px; 
+            fill: currentColor; 
         }
     </style>
 </head>
 <body>
 
-    <div class="profile-card">
-        <!-- Foto Profil Placeholder (Warna Merah Tema YouTube/Gaming) -->
-        <img src="https://ui-avatars.com/api/?name=Tanata&background=ff0000&color=fff&size=200" alt="Tanata" class="profile">
-        
-        <h1>Tanata</h1>
-        <h2>🎮 Game Translator</h2>
-        
-        <p class="bio">
-            Halo! Saya adalah seorang <strong>Penerjemah Game (Game Translator)</strong>. Saya berdedikasi untuk melokalisasi video game agar dapat dinikmati dengan bahasa yang jauh lebih nyaman dan mudah dipahami.
-        </p>
+    <div class="card-wrapper">
+        <div class="profile-card">
+            <h1>Tanata</h1>
+            <h2>Game Translator</h2>
+            
+            <p class="bio">
+                Halo! Saya adalah seorang <strong>Penerjemah Game (Game Translator)</strong>. Saya berdedikasi untuk melokalisasi video game agar dapat dinikmati dengan bahasa yang jauh lebih nyaman dan mudah dipahami.
+            </p>
 
-        <!-- Tombol YouTube -->
-        <a href="https://www.youtube.com/@tanata_otto_margadirata" target="_blank" class="youtube-btn">
-            <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-            Kunjungi YouTube Saya
-        </a>
-
-        <!-- Bagian Statistik (Tetap dipertahankan) -->
-        <div class="stats-box">
-            <div><img src="https://visitor-badge.laobi.icu/badge?page_id=tanata.my.id" alt="visitors" style="vertical-align: middle;"></div>
-            <div>📡 IP: <span id="ip-address">Loading...</span></div>
+            <a href="https://www.youtube.com/@tanata_otto_margadirata" target="_blank" class="youtube-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                Kunjungi YouTube
+            </a>
         </div>
     </div>
 
-    <script>
-        // Fungsi Mengambil IP Pengunjung
-        async function fetchIP() {
-            try {
-                let res = await fetch('https://api.ipify.org?format=json');
-                let data = await res.json();
-                document.getElementById('ip-address').innerText = data.ip;
-            } catch (error) {
-                document.getElementById('ip-address').innerText = "Gagal memuat";
-            }
-        }
-        window.onload = () => { fetchIP(); };
-    </script>
 </body>
 </html>
