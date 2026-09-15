@@ -64,7 +64,7 @@
                     countDisplay.innerText = data.value || data.count || 1;
                 }
             } catch (error) {
-                countDisplay.innerText = "Error API";
+                countDisplay.innerText = "Error: " + error.message;
             }
         }
 
