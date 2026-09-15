@@ -83,20 +83,19 @@
         <h2>Tanata</h2>
         <p class="bio">Welcome to my personal pastelink page 🚀</p>
 
-        <!-- Daftar Link (Silakan ganti "#" dengan link tujuanmu) -->
+        <!-- Daftar Link -->
         <a href="#" class="link-btn">📱 WhatsApp</a>
         <a href="#" class="link-btn">📷 Instagram</a>
         <a href="#" class="link-btn">💼 Portofolio</a>
         <a href="#" class="link-btn">🌐 Website Utama</a>
 
-        <!-- Bagian Statistik (IP dan Counter) -->
+        <!-- Bagian Statistik -->
         <div class="stats-box">
             <div>👁️ Visitor: <span id="visitor-count">Loading...</span></div>
             <div>📡 IP: <span id="ip-address">Loading...</span></div>
         </div>
     </div>
 
-    <!-- Script JavaScript -->
     <script>
         // 1. Fungsi Mengambil IP Pengunjung
         async function fetchIP() {
@@ -109,43 +108,42 @@
             }
         }
 
-        // 2. Fungsi Menghitung Visitor & Mencegah Double Count
+        // 2. Fungsi Menghitung Visitor (Sudah Diperbaiki)
         async function handleVisitor() {
             const countDisplay = document.getElementById('visitor-count');
             
-            // Nama unik untuk database API (jangan diubah agar hitungan tidak reset)
-            const namespace = 'tanatamyid_visitors'; 
-            const key = 'count';
+            // Nama unik database
+            const namespace = 'tanatamyid_web'; 
+            const key = 'visits';
 
-            // Cek di LocalStorage browser pengunjung apakah sudah pernah berkunjung
+            // Cek LocalStorage
             const hasVisited = localStorage.getItem('visited_tanata');
 
             try {
                 if (!hasVisited) {
-                    // Jika belum pernah berkunjung, tambah +1 ke server
-                    let res = await fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`);
+                    // Pakai API baru yang lebih stabil dan sesuai format
+                    let res = await fetch(`https://api.countapi.cc/hit/${namespace}/${key}`);
                     let data = await res.json();
-                    countDisplay.innerText = data.count;
                     
-                    // Simpan jejak di browser (pengganti cookie) agar refresh tidak menambah angka
+                    // Baca properti 'value' bukan 'count'
+                    countDisplay.innerText = data.value || data.count || 1;
+                    
                     localStorage.setItem('visited_tanata', 'true');
                 } else {
-                    // Jika sudah pernah, cukup ambil total angka saat ini tanpa menambah
-                    let res = await fetch(`https://api.counterapi.dev/v1/${namespace}/${key}`);
+                    let res = await fetch(`https://api.countapi.cc/info/${namespace}/${key}`);
                     let data = await res.json();
-                    countDisplay.innerText = data.count;
+                    
+                    countDisplay.innerText = data.value || data.count || 1;
                 }
             } catch (error) {
                 countDisplay.innerText = "Error API";
             }
         }
 
-        // Jalankan program setelah halaman selesai dimuat
         window.onload = () => {
             fetchIP();
             handleVisitor();
         };
     </script>
-
 </body>
 </html>
