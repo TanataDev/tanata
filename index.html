@@ -29,13 +29,15 @@
         <a href="#" class="link-btn">💼 Portofolio</a>
         <a href="#" class="link-btn">🌐 Website Utama</a>
 
+        <!-- Bagian Statistik -->
         <div class="stats-box">
-            <div>👁️ Visitor: <span id="visitor-count">Loading...</span></div>
+            <div>👁️ Visitor: <img src="https://visitor-badge.laobi.icu/badge?page_id=tanata.my.id" alt="visitors" style="vertical-align: middle;"></div>
             <div>📡 IP: <span id="ip-address">Loading...</span></div>
         </div>
     </div>
 
     <script>
+        // Fungsi Mengambil IP Pengunjung
         async function fetchIP() {
             try {
                 let res = await fetch('https://api.ipify.org?format=json');
@@ -46,29 +48,7 @@
             }
         }
 
-        async function handleVisitor() {
-            const countDisplay = document.getElementById('visitor-count');
-            const namespace = 'tanatamyid_web'; 
-            const key = 'visits';
-            const hasVisited = localStorage.getItem('visited_tanata');
-
-            try {
-                if (!hasVisited) {
-                    let res = await fetch(`https://counterapi.com/api/${namespace}/${key}/up`);
-                    let data = await res.json();
-                    countDisplay.innerText = data.value || data.count || 1;
-                    localStorage.setItem('visited_tanata', 'true');
-                } else {
-                    let res = await fetch(`https://counterapi.com/api/${namespace}/${key}`);
-                    let data = await res.json();
-                    countDisplay.innerText = data.value || data.count || 1;
-                }
-            } catch (error) {
-                countDisplay.innerText = "Error: " + error.message;
-            }
-        }
-
-        window.onload = () => { fetchIP(); handleVisitor(); };
+        window.onload = () => { fetchIP(); };
     </script>
 </body>
-</html> 
+</html>
