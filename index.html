@@ -1,1 +1,151 @@
-<h1>Halo Tanata, website aktif!</h1>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanata - Pastelink</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        img.profile {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 4px solid #6c5ce7;
+        }
+        h2 {
+            margin: 0 0 10px 0;
+            color: #2d3436;
+        }
+        p.bio {
+            color: #636e72;
+            margin-bottom: 30px;
+        }
+        .link-btn {
+            display: block;
+            background: #6c5ce7;
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .link-btn:hover {
+            background: #5b4bc4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+        .stats-box {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px dashed #dfe6e9;
+            font-size: 0.9em;
+            color: #b2bec3;
+            display: flex;
+            justify-content: space-between;
+        }
+        .stats-box span {
+            color: #2d3436;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Foto Profil -->
+        <img src="https://ui-avatars.com/api/?name=Tanata&background=6c5ce7&color=fff&size=200" alt="Profile" class="profile">
+        
+        <h2>Tanata</h2>
+        <p class="bio">Welcome to my personal pastelink page 🚀</p>
+
+        <!-- Daftar Link (Silakan ganti "#" dengan link tujuanmu) -->
+        <a href="#" class="link-btn">📱 WhatsApp</a>
+        <a href="#" class="link-btn">📷 Instagram</a>
+        <a href="#" class="link-btn">💼 Portofolio</a>
+        <a href="#" class="link-btn">🌐 Website Utama</a>
+
+        <!-- Bagian Statistik (IP dan Counter) -->
+        <div class="stats-box">
+            <div>👁️ Visitor: <span id="visitor-count">Loading...</span></div>
+            <div>📡 IP: <span id="ip-address">Loading...</span></div>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script>
+        // 1. Fungsi Mengambil IP Pengunjung
+        async function fetchIP() {
+            try {
+                let response = await fetch('https://api.ipify.org?format=json');
+                let data = await response.json();
+                document.getElementById('ip-address').innerText = data.ip;
+            } catch (error) {
+                document.getElementById('ip-address').innerText = "Gagal memuat";
+            }
+        }
+
+        // 2. Fungsi Menghitung Visitor & Mencegah Double Count
+        async function handleVisitor() {
+            const countDisplay = document.getElementById('visitor-count');
+            
+            // Nama unik untuk database API (jangan diubah agar hitungan tidak reset)
+            const namespace = 'tanatamyid_visitors'; 
+            const key = 'count';
+
+            // Cek di LocalStorage browser pengunjung apakah sudah pernah berkunjung
+            const hasVisited = localStorage.getItem('visited_tanata');
+
+            try {
+                if (!hasVisited) {
+                    // Jika belum pernah berkunjung, tambah +1 ke server
+                    let res = await fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`);
+                    let data = await res.json();
+                    countDisplay.innerText = data.count;
+                    
+                    // Simpan jejak di browser (pengganti cookie) agar refresh tidak menambah angka
+                    localStorage.setItem('visited_tanata', 'true');
+                } else {
+                    // Jika sudah pernah, cukup ambil total angka saat ini tanpa menambah
+                    let res = await fetch(`https://api.counterapi.dev/v1/${namespace}/${key}`);
+                    let data = await res.json();
+                    countDisplay.innerText = data.count;
+                }
+            } catch (error) {
+                countDisplay.innerText = "Error API";
+            }
+        }
+
+        // Jalankan program setelah halaman selesai dimuat
+        window.onload = () => {
+            fetchIP();
+            handleVisitor();
+        };
+    </script>
+
+</body>
+</html>
