@@ -108,29 +108,25 @@
             }
         }
 
-        // 2. Fungsi Menghitung Visitor (Sudah Diperbaiki)
+        // 2. Fungsi Menghitung Visitor Menggunakan counterapi.com (Stabil)
         async function handleVisitor() {
             const countDisplay = document.getElementById('visitor-count');
-            
-            // Nama unik database
             const namespace = 'tanatamyid_web'; 
             const key = 'visits';
 
-            // Cek LocalStorage
             const hasVisited = localStorage.getItem('visited_tanata');
 
             try {
                 if (!hasVisited) {
-                    // Pakai API baru yang lebih stabil dan sesuai format
-                    let res = await fetch(`https://api.countapi.cc/hit/${namespace}/${key}`);
+                    // Pertama kali berkunjung -> Lakukan increment (/up)
+                    let res = await fetch(`https://counterapi.com/api/${namespace}/${key}/up`);
                     let data = await res.json();
                     
-                    // Baca properti 'value' bukan 'count'
                     countDisplay.innerText = data.value || data.count || 1;
-                    
                     localStorage.setItem('visited_tanata', 'true');
                 } else {
-                    let res = await fetch(`https://api.countapi.cc/info/${namespace}/${key}`);
+                    // Sudah pernah berkunjung -> Hanya baca data tanpa (/up)
+                    let res = await fetch(`https://counterapi.com/api/${namespace}/${key}`);
                     let data = await res.json();
                     
                     countDisplay.innerText = data.value || data.count || 1;
