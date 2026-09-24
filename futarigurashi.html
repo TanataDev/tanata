@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futarigurashi - Game Translator</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #050505; color: #e0e0e0; 
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 40px 20px; 
+        }
+        @keyframes rgb-glow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+        .card-wrapper {
+            position: relative; padding: 4px; border-radius: 20px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%; animation: rgb-glow 20s linear infinite; max-width: 650px; width: 100%; box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+        .card-wrapper::after {
+            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%; z-index: -1; filter: blur(20px); animation: rgb-glow 20s linear infinite; opacity: 0.8;
+        }
+        .profile-card { position: relative; text-align: center; background: #0f0f0f; padding: 40px 30px; border-radius: 16px; height: 100%; z-index: 1; }
+        
+        h1 { margin: 0 0 10px 0; color: #ffffff; font-size: 24px; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055, 0 0 40px #ff0055; line-height: 1.4; }
+        h2 { margin: 0 0 30px 0; color: #00ffd5; font-size: 16px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; text-shadow: 0 0 5px #00ffd5, 0 0 15px #00ffd5; }
+
+        .youtube-btn { 
+            display: inline-flex; align-items: center; justify-content: center; background: transparent; color: #ff0000; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 14px; border: 2px solid #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4), inset 0 0 15px rgba(255, 0, 0, 0.2); transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; width: 100%;
+        }
+        .youtube-btn:hover { background: #ff0000; color: #ffffff; box-shadow: 0 0 25px rgba(255, 0, 0, 1), inset 0 0 15px rgba(255, 255, 255, 0.5); transform: scale(1.05); }
+        .youtube-btn svg { width: 22px; height: 22px; margin-right: 10px; fill: currentColor; }
+
+        .saweria-btn { 
+            display: inline-flex; align-items: center; justify-content: center; background: transparent; color: #ffaa00; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 14px; border: 2px solid #ffaa00; box-shadow: 0 0 15px rgba(255, 170, 0, 0.4), inset 0 0 15px rgba(255, 170, 0, 0.2); transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; width: 100%;
+        }
+        .saweria-btn:hover { background: #ffaa00; color: #050505; box-shadow: 0 0 25px rgba(255, 170, 0, 1), inset 0 0 15px rgba(255, 255, 255, 0.5); transform: scale(1.05); }
+
+        .email-btn { 
+            display: inline-flex; align-items: center; justify-content: center; background: transparent; color: #0088ff; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 14px; border: 2px solid #0088ff; box-shadow: 0 0 15px rgba(0, 136, 255, 0.4), inset 0 0 15px rgba(0, 136, 255, 0.2); transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; width: 100%;
+        }
+        .email-btn:hover { background: #0088ff; color: #ffffff; box-shadow: 0 0 25px rgba(0, 136, 255, 1), inset 0 0 15px rgba(255, 255, 255, 0.5); transform: scale(1.05); }
+
+        .paste-container { text-align: left; width: 100%; }
+        .game-section { background: rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .game-title { color: #fffb00; font-size: 18px; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 5px rgba(255, 251, 0, 0.5); display: flex; align-items: center; }
+
+        .link-group { display: flex; flex-wrap: wrap; gap: 12px; }
+        .neon-link { background: rgba(0, 255, 213, 0.05); color: #00ffd5; text-decoration: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; font-size: 14px; border: 1px solid #00ffd5; box-shadow: 0 0 8px rgba(0, 255, 213, 0.3), inset 0 0 8px rgba(0, 255, 213, 0.1); transition: all 0.3s ease; text-align: center; flex-grow: 1; }
+        .neon-link:hover { background: #00ffd5; color: #050505; box-shadow: 0 0 15px rgba(0, 255, 213, 0.8); transform: translateY(-2px); }
+        .neon-link.alt { color: #ff00c8; border-color: #ff00c8; background: rgba(255, 0, 200, 0.05); box-shadow: 0 0 8px rgba(255, 0, 200, 0.3), inset 0 0 8px rgba(255, 0, 200, 0.1); }
+        .neon-link.alt:hover { background: #ff00c8; color: #ffffff; box-shadow: 0 0 15px rgba(255, 0, 200, 0.8); }
+        .neon-link.special { color: #fffb00; border-color: #fffb00; background: rgba(255, 251, 0, 0.05); box-shadow: 0 0 8px rgba(255, 251, 0, 0.3), inset 0 0 8px rgba(255, 251, 0, 0.1); width: 100%; font-size: 15px; }
+        .neon-link.special:hover { background: #fffb00; color: #050505; box-shadow: 0 0 15px rgba(255, 251, 0, 0.8); }
+        .action-text { color: #cccccc; font-size: 14px; margin: 20px 0 8px 0; font-style: italic; line-height: 1.4; }
+        .device-title { color: #ffffff; font-size: 18px; margin: 30px 0 15px 0; padding-bottom: 5px; border-bottom: 2px solid #ff0055; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px #ff0055; font-weight: bold;}
+        .info-box { background: rgba(0, 255, 213, 0.05); border-left: 4px solid #00ffd5; padding: 12px 15px; margin-bottom: 25px; color: #e0e0e0; font-size: 14px; line-height: 1.5; font-style: italic; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="card-wrapper">
+        <div class="profile-card">
+
+            <h1>Futarigurashi<br>Bahasa Indonesia</h1>
+            <h2>Link Download & Patch</h2>
+
+            <p class="action-text">Bantu subscribe biar makin semangat nge-TL game seru lainnya!</p>
+            <a href="https://www.youtube.com/@tanata_otto_margadirata" target="_blank" class="youtube-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                Subscribe YouTube
+            </a>
+
+            <p class="action-text">Boleh dong donasinya, buat modal ngopi + beli cemilan pas begadang ngetranslate, hehe~</p>
+            <a href="https://saweria.co/Tanata" target="_blank" class="saweria-btn">
+                Donasi via Saweria
+            </a>
+
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tanataottomargadirata@gmail.com" target="_blank" class="email-btn">
+                Laporan Bug / Request
+            </a>
+            
+            <div class="paste-container">
+
+                <!-- ====== PC ====== -->
+                <div class="device-title">PC</div>
+                
+                <!-- Versi Kasar -->
+                <div class="game-section">
+                    <h3 class="game-title">Terjemahan Kasar (80%)</h3>
+                    <div class="info-box" style="margin-bottom: 15px;">
+                        Semua dialog, pilihan, dan beberapa keterangan item, dan lain-lain sudah diterjemahkan.
+                    </div>
+                    <div class="link-group">
+                        <a href="#" target="_blank" class="neon-link special">Download</a>
+                    </div>
+                </div>
+
+                <!-- Versi Bersih -->
+                <div class="game-section">
+                    <h3 class="game-title">Versi Terjemahan Bersih</h3>
+                    <div class="info-box" style="margin-bottom: 15px;">
+                        <strong>Keterangan:</strong> Butuh beberapa hari untuk pengecekan total, dan lain-lain.
+                    </div>
+                    <div class="link-group">
+                        <a href="#" class="neon-link alt" style="opacity: 0.5; pointer-events: none;">Coming Soon</a>
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
